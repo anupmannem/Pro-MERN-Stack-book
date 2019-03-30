@@ -45,3 +45,9 @@ The way to inform React of a state change is by using the `setState()` method.
 -   this method takes in an object and top level properties are merged into the existing state.
 -   within the component, you can access the properties via `this.state` variable.
 -   the initialization of state is done in the constructor.
+
+This is what **declarative programming** paradigm is all about, you just mutate the model(state) and views rerender itself to reflect the changes.
+
+# Event Handling
+
+To handle button's click event, we attach the handle function to the onClick attribute.
