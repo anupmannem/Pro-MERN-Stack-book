@@ -1,13 +1,36 @@
 var contentNode = document.getElementById("contents");
 
+class IssueFilter extends React.Component {
+    render() {
+        return <div>This is placeholder for the issue filter.</div>;
+    }
+}
+
+class IssueTable extends React.Component {
+    render() {
+        return <div>This is placeholder for the table of issues.</div>;
+    }
+}
+
+class IssueAdd extends React.Component {
+    render() {
+        return <div>This is placeholder for an issue add entry form.</div>;
+    }
+}
+
 class IssueList extends React.Component {
     render() {
-        return <div>This is a placeholder for the issue list.</div>;
+        return (
+            <div>
+                <h1>Issue Tracker</h1>
+                <IssueFilter />
+                <hr />
+                <IssueTable />
+                <hr />
+                <IssueAdd />
+            </div>
+        );
     }
 }
 
 ReactDOM.render(<IssueList />, contentNode);
-// const continents = ["Africa", "America", "Asia", "Australia", "Europe"];
-// const message = continents.map(c => `Hello ${c}!`).join(" ");
-// var component = <h1>Hello World! JSX is being tranformed to JS</h1>;
-// var component = <p>{message}</p>;
