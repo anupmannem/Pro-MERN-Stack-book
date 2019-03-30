@@ -65,4 +65,11 @@ class IssueList extends React.Component {
     }
 }
 
+// issue_id and issue_title are properties expected
+// issue_id being a mandatory
+IssueRow.propTypes = {
+    issue_id: React.PropTypes.number.isRequired,
+    issue_title: React.PropTypes.string
+};
+
 ReactDOM.render(<IssueList />, contentNode);
