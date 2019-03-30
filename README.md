@@ -33,3 +33,15 @@ For example, we create an array and pass that array as input.
     -   passing a global array into IssueTable component with attribute issues
     -   rendering multiple IssueRows in IssueTable component using map function
         -   passing the array data to IssueRow component with attribute issue
+
+# Setting State
+
+To make components that respond to user inputs and other events, React uses a datastructure called `state` in the component.
+The state essentially holds the model, something that can change, as opposed to immutable properties in the form of props.  
+React treats a component as a simple state machine.Whenever the state changes, it triggers a rerender of the component and the view automatically changes.
+
+The way to inform React of a state change is by using the `setState()` method.
+
+-   this method takes in an object and top level properties are merged into the existing state.
+-   within the component, you can access the properties via `this.state` variable.
+-   the initialization of state is done in the constructor.
