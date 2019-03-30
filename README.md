@@ -23,3 +23,13 @@ Properties being passed from one component to another are validated against a sp
 This specification is supplied in the form of static object called _propTypes_ (with name of the property as the key and the validator as the value).
 
 **property validation is checked only in development mode** and a warning is shown in console when any validation is failed.
+
+# Dynamic Composition
+
+Replacing hardcoded components with programatically generated set.  
+For example, we create an array and pass that array as input.
+
+-   IssueList renders IssueTable component
+    -   passing a global array into IssueTable component with attribute issues
+    -   rendering multiple IssueRows in IssueTable component using map function
+        -   passing the array data to IssueRow component with attribute issue
