@@ -51,3 +51,15 @@ This is what **declarative programming** paradigm is all about, you just mutate 
 # Event Handling
 
 To handle button's click event, we attach the handle function to the onClick attribute.
+
+## Child to Parent communication
+
+The child does not have access to the parent's methods. The way to communicate from child to a parent is by passing _callbacks_ from the parent to the child.
+
+-   In this case, we pass `createIssue` as a callback property from _IssueTable_ to _IssueAdd_ component.
+
+From the child, you just call the passed function in the handler(`'handleSubmit'`) to create a new issue. And within this method, we read the form's input values and using them we call the `createIssue` function which is available via _this.props_.
+
+#### onSubmit vs onClick
+
+-   both events are acceptable, but using `onSubmit` will allow user to press _enter_ to add a new issue in addition to clicking the button.

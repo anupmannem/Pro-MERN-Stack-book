@@ -50,12 +50,6 @@ class IssueTable extends React.Component {
     }
 }
 
-class IssueAdd extends React.Component {
-    render() {
-        return <div>This is placeholder for an issue add entry form.</div>;
-    }
-}
-
 class IssueRow extends React.Component {
     render() {
         const issue = this.props.issue;
@@ -77,28 +71,60 @@ class IssueRow extends React.Component {
     }
 }
 
+class IssueAdd extends React.Component {
+    constructor() {
+        super();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    handleSubmit(e) {
+        e.preventDefault();
+        var form = document.forms.issueAdd;
+        this.props.createIssues({
+            owner: form.owner.value,
+            title: form.title.value,
+            status: "New",
+            created: new Date()
+        });
+        // clear the input fields for next value
+        form.owner.value = "";
+        form.title.value = "";
+    }
+    render() {
+        return (
+            <div>
+                <form name="issueAdd" onSubmit={this.handleSubmit}>
+                    <input type="text" name="owner" placeholder="Owner" />
+                    <input type="text" name="title" placeholder="Title" />
+                    <button>Add</button>
+                </form>
+            </div>
+        );
+    }
+}
+
 class IssueList extends React.Component {
     constructor() {
         super();
-        this.state = { issues: issue };
-        // setTimeout(this.createTestIssue.bind(this), 2000);
-        this.createTestIssue = this.createTestIssue.bind(this);
+        this.state = { issues: [] };
+        // binding this method, since it's now being called from another component
+        this.createIssue = this.createIssue.bind(this);
     }
 
+    componentDidMount() {
+        this.loadData();
+    }
+    loadData() {
+        setTimeout(() => {
+            this.setState({ issues: issue });
+        }, 500);
+    }
     createIssue(newIssue) {
         const newIssues = this.state.issues.slice();
         newIssue.id = this.state.issues.length + 1;
         newIssues.push(newIssue);
         this.setState({ issues: newIssues });
     }
-    createTestIssue() {
-        this.createIssue({
-            status: "New",
-            owner: "Pieta",
-            created: new Date(),
-            title: "Completion date should be optional"
-        });
-    }
+
     render() {
         return (
             <div>
@@ -106,9 +132,8 @@ class IssueList extends React.Component {
                 <IssueFilter />
                 <hr />
                 <IssueTable issues={this.state.issues} />
-                <button onClick={this.createTestIssue}>Add</button>
                 <hr />
-                <IssueAdd />
+                <IssueAdd createIssues={this.createIssue} />
             </div>
         );
     }
