@@ -6,6 +6,11 @@ _babel src --presets react --out-dir static --watch_ - watches for changes in js
 
 _babel src --presets react,es2015 --out-dir static_ - includes capabilities of ES6\ECMAScript2015 features
 
+running the application
+
+-   npm run compile
+-   npm start
+
 # Component Composition
 
 Building components that uses user-defined components apart from built-in react components  
@@ -63,3 +68,23 @@ From the child, you just call the passed function in the handler(`'handleSubmit'
 #### onSubmit vs onClick
 
 -   both events are acceptable, but using `onSubmit` will allow user to press _enter_ to add a new issue in addition to clicking the button.
+
+# Stateless components
+
+1. IssueList has lots of methods, a state, initialization and functions that modify the state.
+2. Incomparision, IssueAdd has some interactivity, but no state (we are not capturing any, in this case).
+3. IssueRow and IssueTable have nothing but a `render()` method.
+
+For performance reasons, it is recommended that such components are written as functions rather than classes.
+
+# Designing Components
+
+### State vs Props
+
+-   Both state and props hold model information, but they are different.
+-   the props are immutable, but state is not.
+-   state variables are passed down to child components as props, because child don't maintain or modify them.
+-   if any event in child changes the parent's state, the child calls a method defined in the parent. Access to this method should have been explicitly given by passing it as a callback via props.
+
+**parent communicate with children via props, and children to parent via callback**  
+_siblings can't communicate with eachother, if there is a need then the information has to go up the hierarchy and back down_.

@@ -26,50 +26,45 @@ class IssueFilter extends React.Component {
     }
 }
 
-class IssueTable extends React.Component {
-    render() {
-        const issueRows = this.props.issues.map(issue => (
-            <IssueRow key={issue.id} issue={issue} />
-        ));
-        return (
-            <table className="bordered-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Status</th>
-                        <th>Owner</th>
-                        <th>Created</th>
-                        <th>Effort</th>
-                        <th>Completion Date</th>
-                        <th>Title</th>
-                    </tr>
-                </thead>
-                <tbody>{issueRows}</tbody>
-            </table>
-        );
-    }
+// stateless component
+function IssueTable(props) {
+    const issueRows = props.issues.map(issue => (
+        <IssueRow key={issue.id} issue={issue} />
+    ));
+    return (
+        <table className="bordered-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                    <th>Created</th>
+                    <th>Effort</th>
+                    <th>Completion Date</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>{issueRows}</tbody>
+        </table>
+    );
 }
 
-class IssueRow extends React.Component {
-    render() {
-        const issue = this.props.issue;
-        return (
-            <tr>
-                <td>{issue.id}</td>
-                <td>{issue.status}</td>
-                <td>{issue.owner}</td>
-                <td>{issue.created.toDateString()}</td>
-                <td>{issue.effort}</td>
-                <td>
-                    {issue.completionDate
-                        ? issue.completionDate.toDateString()
-                        : ""}
-                </td>
-                <td>{issue.title}</td>
-            </tr>
-        );
-    }
-}
+// stateless component
+const IssueRow = props => (
+    <tr>
+        <td>{props.issue.id}</td>
+        <td>{props.issue.status}</td>
+        <td>{props.issue.owner}</td>
+        <td>{props.issue.created.toDateString()}</td>
+        <td>{props.issue.effort}</td>
+        <td>
+            {props.issue.completionDate
+                ? props.issue.completionDate.toDateString()
+                : ""}
+        </td>
+        <td>{props.issue.title}</td>
+    </tr>
+);
 
 class IssueAdd extends React.Component {
     constructor() {
@@ -105,19 +100,23 @@ class IssueAdd extends React.Component {
 class IssueList extends React.Component {
     constructor() {
         super();
+        // initializing the state
         this.state = { issues: [] };
         // binding this method, since it's now being called from another component
         this.createIssue = this.createIssue.bind(this);
     }
 
+    // react hook, when component is loaded, load data
     componentDidMount() {
         this.loadData();
     }
+    // loading data from source to the state
     loadData() {
         setTimeout(() => {
             this.setState({ issues: issue });
         }, 500);
     }
+    // function to modify the state
     createIssue(newIssue) {
         const newIssues = this.state.issues.slice();
         newIssue.id = this.state.issues.length + 1;
