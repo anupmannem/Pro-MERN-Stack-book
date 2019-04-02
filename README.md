@@ -88,3 +88,82 @@ For performance reasons, it is recommended that such components are written as f
 
 **parent communicate with children via props, and children to parent via callback**  
 _siblings can't communicate with eachother, if there is a need then the information has to go up the hierarchy and back down_.
+
+---
+
+# EXPRESS
+
+### Routing
+
+-   takes a client request
+-   matches against any routes that are present
+-   executes a handler function that is associated with that route
+    -   handler function is expected to generate the appropriate response.
+
+The handler function is passed in a request and response object. The request object can be inspected to get the various details of the request, and the response object's methods can be used to send the response to the client.
+
+#### Writing a handler function
+
+To setup a route, you use a function to indicate which HTTP method to use.
+
+-   to handle a GET HTTP method, you use `app.get()` function
+-   you pass in a pattern to match and a function to deal with the request if it does match.
+
+```javascript
+// if you receive get request to the URL /hello then do this
+app.get("/hello", (req, res) => {
+    res.send("hello world!");
+});
+```
+
+#### Request Matching
+
+When a request is received, first thing that happens is request matching.
+
+-   the get function was called, indicating it should match only the GET HTTP method.
+-   and also the request URL with path spec _'/hello'_
+-   if a request matches this spec, then the handler is called.
+
+#### Route Parameters
+
+Route parameters are named segments in the path specification that match a part of the URL.  
+ex - `app.get('/customers/:customerId', ...)`
+
+-   the URL /customers/1234 will match the above route specification, and so will /customers/4567.
+    In either case, if match occurs, the value in that part of the URL is supplied as a variable in the request object and supplied to the handler function as part of **`req.params`**, with the name of the parameter as the key.
+-   req.params.customerId will have the values 1234 or 4567 for each of those URLs respectively.
+
+#### Route Lookup
+
+Multiple routes can be setup to match different URLs and patterns. The router does not try to find a best match,instead it tries to match all the routes in the order they were installed. So if two routes are possible matches to a request, it will use the first defined one.  
+ex - if you want to match everything that goes under `/api/`, that is a pattern like `/api/*`, you should add this route only after all the specifc routes that handle paths such as /api/issues, etc...
+
+### Request Objects
+
+-   req.query: holds a parsed query string
+    -   ex -order[status]=closed, can be accessed as `req.query.order.status`
+-   req.header: gives access to any header in the request (key-value pairs)
+-   req.path: contains the path part of the URL, i.e everything upto '?' in the URL
+-   req.url, req.originalURL: contains the complete URL including the query strings
+-   req.body: contains body of the request, valid for POST-PUT-PATCH requests.
+    These are few of the objects, to read about all the request objects checkout the [documentation](http://expressjs.com/en/api.html#req)
+
+### Response Objects
+
+The response object is used to construct and send a response to a request. **If no response is sent, client is left waiting**.
+
+-   res.send: responds with a string, also accepts buffer
+-   res.status(code): sets the status response code
+-   res.json(object): same as res.send, except this method forces conversion of the parameter passed into a JSON.
+-   res.sendFile(path): responds with contents of file at path.
+    These are few of the objects, to read about all the response objects checkout the [documentation](http://expressjs.com/en/api.html#res)
+
+### Middleware
+
+Middleware functions are those that have access to request, response objects and the next middleware function in the application's request-response cycle.
+
+-   the next middleware function is commonly denoted by a variable named `next`
+-   `express.static` is a middleware function which serves static files.
+
+_Middleware can be at application level(i.e applies to all requests) or the router level(i.e applies to specific request path patterns)_  
+Middleware is invoked using `app.use(middlewareFunction)`
