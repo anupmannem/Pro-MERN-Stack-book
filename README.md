@@ -167,3 +167,12 @@ Middleware functions are those that have access to request, response objects and
 
 _Middleware can be at application level(i.e applies to all requests) or the router level(i.e applies to specific request path patterns)_  
 Middleware is invoked using `app.use(middlewareFunction)`
+
+### Tools for express
+- **nodemon**
+    + to automatically restart the server, on changes
+    + `npm install nodemon --save-dev`
+- **body-parser**
+    + to parse request bodies and convert to object
+    + `npm install body-parser --save`
+    + body-parser places the result of parsing into request's body property `(req.body)`.
