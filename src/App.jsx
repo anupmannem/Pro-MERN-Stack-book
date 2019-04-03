@@ -90,7 +90,7 @@ class IssueList extends React.Component {
     componentDidMount() {
         this.loadData();
     }
-    // loading data from source to the state
+    // loading data (coming from server) from source to the state
     loadData() {
         fetch('/api/issues')
 			.then(response => response.json())
@@ -106,10 +106,19 @@ class IssueList extends React.Component {
     }
     // function to modify the state
     createIssue(newIssue) {
-        const newIssues = this.state.issues.slice();
-        newIssue.id = this.state.issues.length + 1;
-        newIssues.push(newIssue);
-        this.setState({ issues: newIssues });
+        fetch('/api/issues', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json'},
+			body: JSON.stringify(newIssue);
+		})
+			.then(response => response.json())
+			.then(updatedIssue => {
+				updatedIssue.created = new Date(updatedIssue.created);
+				if(updatedIssue.completionDate) updatedIssue.completionDate = new Date(updatedIssue.completionDate);
+				const newIssues = this.state.issues.concat(updatedIssue);
+				this.setState({ issues: newIssues });
+			})
+			.catch(err => alert("error in sending data to server: " + err.message));
     }
 
     render() {
