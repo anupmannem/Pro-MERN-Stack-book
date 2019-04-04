@@ -26,6 +26,40 @@ const issue = [
     }
 ];
 
+// server-side validation
+const validIssueStatus = {
+    New: true,
+    Open: true,
+    Assigned: true,
+    Fixed: true,
+    Verified: true,
+    Closed: true
+}
+
+const issueFieldType = {
+    id: "required",
+    status: "required",
+    owner: "required",
+    effort: "required",
+    created: "required",
+    completionDate: "optional",
+    title: "required"
+}
+
+// validation handler function
+function validateIssue(issue) {
+    for(const field in issueFieldType) {
+        const type = issueFieldType[field];
+        if(!type) {
+            delete issue[field];
+        } else if(type === 'required' && !issue[field]) {
+            return `${field} is required.`;
+        }        
+    }    
+    if(!validIssueStatus[issue.status]) return `${issue.status} is not a valid status.`;
+    return null;
+}
+
 app.get("/api/issues", (req, res) => {
     const metadata = { total_count: issue.length };
     res.json({ _metadata: metadata, records: issue });
@@ -37,6 +71,12 @@ app.post("/api/issues", (req, res) => {
 	newIssue.create = new Date();
 
 	if(!issue.status) issue.status = "New";
+    const err = validationIssue(issue);
+    if(err) {
+        res.status(422).json({ message: `Invalid request: ${err}` });
+        return;
+    }
+
 	issue.push(newIssue);
 	res.json(newIssue);
 });

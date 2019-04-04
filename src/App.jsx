@@ -91,6 +91,7 @@ class IssueList extends React.Component {
         this.loadData();
     }
     // loading data (coming from server) from source to the state
+    // upon refresh, the data stays
     loadData() {
         fetch('/api/issues')
 			.then(response => response.json())
@@ -100,7 +101,7 @@ class IssueList extends React.Component {
 					issue.created = new Date(issue.created);
 					if(issue.completionDate) issue.completionDate = new Date(issue.completionDate);
 				});
-				this.setState({ issue: data.records });
+				this.setState({ issues: data.records });
 			})
 			.catch({ err => console.log(err) });
     }
@@ -111,13 +112,20 @@ class IssueList extends React.Component {
 			headers: { 'Content-Type': 'application/json'},
 			body: JSON.stringify(newIssue);
 		})
-			.then(response => response.json())
-			.then(updatedIssue => {
-				updatedIssue.created = new Date(updatedIssue.created);
-				if(updatedIssue.completionDate) updatedIssue.completionDate = new Date(updatedIssue.completionDate);
-				const newIssues = this.state.issues.concat(updatedIssue);
-				this.setState({ issues: newIssues });
-			})
+			.then(response => {
+                if(response.ok) {
+                    response.json()
+                    .then(updatedIssue => {
+                        updatedIssue.created = new Date(updatedIssue.created);
+                        if(updatedIssue.completionDate) updatedIssue.completionDate = new Date(updatedIssue.completionDate);
+                        const newIssues = this.state.issues.concat(updatedIssue);
+                        this.setState({ issues: newIssues });
+                    })
+                } else {
+                    response.json()
+                    .then(error => alert("Failed to add issue: " + error.message));
+                }
+            })
 			.catch(err => alert("error in sending data to server: " + err.message));
     }
 

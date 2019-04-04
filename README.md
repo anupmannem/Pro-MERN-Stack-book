@@ -89,6 +89,8 @@ For performance reasons, it is recommended that such components are written as f
 **parent communicate with children via props, and children to parent via callback**  
 _siblings can't communicate with eachother, if there is a need then the information has to go up the hierarchy and back down_.
 
+**state is immutable**, so use methods like concat() to add to it.
+
 ---
 
 # EXPRESS
@@ -167,6 +169,11 @@ Middleware functions are those that have access to request, response objects and
 
 _Middleware can be at application level(i.e applies to all requests) or the router level(i.e applies to specific request path patterns)_  
 Middleware is invoked using `app.use(middlewareFunction)`
+
+#### Handling Error messages
+
+The error message can be returned in the `response.body` as a JSON string. We can return an object with single property called `message` that holds a readable as description.  
+At the server, sending an error is simple. All you need to do is set the status using `res.status()` and send the error messages as the response.
 
 ### Tools for express
 - **nodemon**
