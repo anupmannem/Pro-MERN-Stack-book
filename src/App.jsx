@@ -110,7 +110,7 @@ class IssueList extends React.Component {
 		fetch('/api/issues', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json'},
-			body: JSON.stringify(newIssue);
+			body: JSON.stringify(newIssue),
 		})
 			.then(response => {
 				if(response.ok) {
