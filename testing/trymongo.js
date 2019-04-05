@@ -32,7 +32,7 @@ function testWithCallbacks() {
 	// connect to mongo
 	MongoClient.connect('mongodb://localhost/playground', function(err, db) {
 		// insert document
-		db.collection('employees').insertOne({id: 1, name: 'A Callback'},
+		db.collection('employees').insertOne({id: 1, name: 'A. Callback'},
 			function(err, result) {
 				console.log("result of insert:", result.insertedId);
 				// display documents
@@ -48,3 +48,23 @@ function testWithCallbacks() {
 	});
 }
 
+function testWithPromises() {
+	let db;
+	MongoClient.connect('mongodb://localhost/playground')
+		.then(connection => {
+			db = connection;
+			return db.collection('employees').insertOne({id: 1, name: 'B. Promises'});
+		})
+		.then(result => {
+			console.log("result of insert:", result.insertedId);
+			return db.collection('employees').find({id: 1}).toArray();
+		})
+		.then(docs => {
+			console.log("result of find:", docs);
+			db.close();
+		})
+		.catch(err => console.log("Error", err));
+	// the result of every call is promise, on to which we attach a then, which returns another promise.
+	// Assuming all calls throw error, you'll find that error handling isn't needed in each block,
+	// just one catch() for errors at any stage is enough
+}
