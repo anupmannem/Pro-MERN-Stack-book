@@ -99,3 +99,37 @@ function testWithGenerators() {
     // resumed from where it was left off, if called again.
     // co module does repeated calling
 }
+
+function testWithAsync() {
+    const async = require("async");
+    let db;
+    async.waterfall(
+        [
+            next => {
+                MongoClient.connection("mongodb://localhost/playground", next);
+            },
+            (connection, next) => {
+                db = connection;
+                db.collection("employees").insertOne(
+                    { id: 1, name: "D. Async" },
+                    next
+                );
+            },
+            (insertResult, next) => {
+                console.log("Insert result:", insertResult.insertedId);
+                db.collection("employees")
+                    .find({ id: 1 })
+                    .toArray(next);
+            },
+            (docs, next) => {
+                console.log("result of find:", docs);
+                db.close();
+                next(null, "All done");
+            }
+        ],
+        (err, result) => {
+            if (err) console.log("Error", err);
+            else console.log(result);
+        }
+    );
+}
