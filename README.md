@@ -175,11 +175,21 @@ Middleware is invoked using `app.use(middlewareFunction)`
 The error message can be returned in the `response.body` as a JSON string. We can return an object with single property called `message` that holds a readable as description.  
 At the server, sending an error is simple. All you need to do is set the status using `res.status()` and send the error messages as the response.
 
+#### different paradigms of writing in node
+
+1. callbacks
+2. promises
+3. generators
+4. async
+
+choosing any of the paradigm is a matter of taste and familiarity.
+
 ### Tools for express
-- **nodemon**
-    + to automatically restart the server, on changes
-    + `npm install nodemon --save-dev`
-- **body-parser**
-    + to parse request bodies and convert to object
-    + `npm install body-parser --save`
-    + body-parser places the result of parsing into request's body property `(req.body)`.
+
+-   **nodemon**
+    -   to automatically restart the server, on changes
+    -   `npm install nodemon --save-dev`
+-   **body-parser**
+    -   to parse request bodies and convert to object
+    -   `npm install body-parser --save`
+    -   body-parser places the result of parsing into request's body property `(req.body)`.

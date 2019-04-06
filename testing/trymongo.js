@@ -30,7 +30,10 @@ if (process.argv.length < 3) {
 
 function testWithCallbacks() {
     // connect to mongo
-    MongoClient.connect("mongodb://localhost/playground", function(err, db) {
+    MongoClient.connect("mongodb://localhost:27017/playground", function(
+        err,
+        db
+    ) {
         // insert document
         db.collection("employees").insertOne(
             { id: 1, name: "A. Callback" },
@@ -54,7 +57,7 @@ function testWithCallbacks() {
 
 function testWithPromises() {
     let db;
-    MongoClient.connect("mongodb://localhost/playground")
+    MongoClient.connect("mongodb://localhost:27017/playground")
         .then(connection => {
             db = connection;
             return db
@@ -82,7 +85,9 @@ function testWithGenerators() {
     const co = require("co");
     // writing a genrator with *
     co(function*() {
-        const db = yield MongoClient.connect("mongodb://localhost/playground");
+        const db = yield MongoClient.connect(
+            "mongodb://localhost:27017/playground"
+        );
         const result = yield db
             .collection("employees")
             .insertOne({ id: 1, name: "C. Generators" });
@@ -106,7 +111,10 @@ function testWithAsync() {
     async.waterfall(
         [
             next => {
-                MongoClient.connection("mongodb://localhost/playground", next);
+                MongoClient.connection(
+                    "mongodb://localhost:27017/playground",
+                    next
+                );
             },
             (connection, next) => {
                 db = connection;
