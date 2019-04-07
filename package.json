@@ -21,6 +21,8 @@
 		"async": "^2.6.2",
 		"babel-preset-es2015": "^6.24.1",
 		"co": "^4.6.0",
-		"nodemon": "^1.18.10"
+		"nodemon": "^1.18.10",
+		"webpack": "^4.29.6",
+		"webpack-cli": "^3.3.0"
 	}
 }
