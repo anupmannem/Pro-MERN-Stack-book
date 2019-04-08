@@ -184,7 +184,7 @@ At the server, sending an error is simple. All you need to do is set the status 
 
 choosing any of the paradigm is a matter of taste and familiarity.
 
-### Tools for express
+### Tools
 
 - **nodemon**
   - to automatically restart the server, on changes
@@ -198,3 +198,8 @@ choosing any of the paradigm is a matter of taste and familiarity.
     would in a node.js application using require or equivalent statements.
   - They automatically figure out not just your own dependent modules, but also third party libraries.
   - They put all these individual files into one or more bundles of javascript that has all the required code that can be included in the html file.
+  - `npm install webpack --save-dev`
+  - `npm install webpack-cli`
+- **babel-loader**
+  - all transforms and file types other than pure javascript require loaders in webpack.
+  - `npm install babel-loader --save-dev
